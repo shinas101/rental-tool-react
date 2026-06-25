@@ -1,0 +1,263 @@
+import React, { createContext, useContext, useState } from 'react';
+
+type Language = 'en' | 'ml';
+
+const TRANSLATIONS = {
+  en: {
+    app_name: "ABC Rental Shop",
+    dashboard: "Dashboard",
+    tools: "Tools",
+    rent_tool: "Rent Tool",
+    active_rentals: "Active Rentals",
+    bills: "Bills",
+    total_tools: "Total Tools",
+    available_tools: "Available Tools",
+    active_rentals_count: "Active Rentals",
+    all_tools: "All Tools",
+    select_tool_hint: "Select a tool to see who rented it.",
+    tool_name: "Tool Name",
+    available_qty: "Available Quantity",
+    rate_per_day: "Rate Per Day",
+    add_tool: "Add Tool",
+    edit_tool: "Edit Tool",
+    edit_rental: "Edit Rental",
+    delete_tool: "Delete Tool",
+    clear: "Clear",
+    missing_tool_name: "Missing Tool Name",
+    enter_tool_name: "Enter a tool name.",
+    duplicate_tool: "Duplicate Tool",
+    tool_exists: "A tool with this name already exists.",
+    select_tool: "Select Tool",
+    select_tool_edit: "Select a tool to edit.",
+    select_tool_delete: "Select a tool to delete.",
+    delete_selected_tool: "Delete the selected tool?",
+    cannot_delete: "Cannot Delete",
+    tool_has_active_rentals: "This tool has active rentals and cannot be deleted.",
+    customer_name: "Customer Name",
+    phone_number: "Phone Number",
+    tool: "Tool",
+    quantity: "Quantity",
+    rent_date: "Rent Date",
+    expected_return_date: "Expected Return Date",
+    missing_customer: "Missing Customer",
+    enter_customer_name: "Enter customer name.",
+    missing_phone: "Missing Phone",
+    enter_phone_number: "Enter phone number.",
+    no_tool_available: "No Tool Available",
+    add_available_tool_first: "Add an available tool first.",
+    invalid_date: "Invalid Date",
+    return_before_rent: "Expected return date cannot be before rent date.",
+    rented: "Rented",
+    tool_rented_successfully: "Tool rented successfully.",
+    cannot_rent: "Cannot Rent",
+    active_rentals_search: "Search by customer name or phone number",
+    return_tool: "Return Tool",
+    print_bill: "Print Bill",
+    save_pdf: "Save Bill as PDF",
+    select_rental: "Select Rental",
+    select_rental_first: "Select a rental first.",
+    return_confirm: "Return the selected tool and calculate the bill?",
+    returned: "Returned",
+    status: "Status",
+    status_active: "Active",
+    status_returned: "Returned",
+    rental_returned: "Rental returned.",
+    days: "Days",
+    amount: "Amount",
+    cannot_return: "Cannot Return",
+    bills_search: "Search previous bills by customer name or phone number",
+    actual_return_date: "Actual Return Date",
+    return_date: "Return Date",
+    update_return_date: "Update Return Date",
+    reprint_bill: "Reprint Bill",
+    print_preview: "Print Preview",
+    print_now: "Print",
+    close: "Close",
+    mark_not_returned: "Mark as Not Returned",
+    select_bill: "Select Bill",
+    select_bill_first: "Select a bill first.",
+    move_back_active: "Move this bill back to active rentals?",
+    updated: "Updated",
+    rental_marked_not_returned: "Rental marked as not returned.",
+    cannot_update: "Cannot Update",
+    return_date_updated: "Return date updated and bill recalculated.",
+    add_to_list: "Add to List",
+    action: "Action",
+    remove: "Remove",
+    cart_empty: "List is Empty",
+    add_tool_first: "Please add at least one tool to the list first.",
+    language: "Language",
+    theme: "Theme",
+    dark: "Dark",
+    light: "Light",
+    english: "English",
+    malayalam: "Malayalam",
+    rental_details: "Rental Details",
+    select_rental_details: "Select a rental to view details.",
+    tools_taken: "Tools Taken",
+    paid: "Paid",
+    not_paid: "Not Paid",
+    payment_status: "Payment Status",
+    mark_as_paid: "Mark as Paid",
+    mark_as_not_paid: "Mark as Not Paid",
+    credits: "Credits",
+    credit_tracking: "Credit Tracking",
+    total_credit: "Total Credit",
+    bill_count: "Unpaid Bills",
+    tools_on_credit: "Tools on Credit",
+    credits_search: "Search credit customers by name or phone",
+    mark_customer_paid: "Mark Customer Paid",
+    mark_customer_paid_confirm: "Mark all outstanding bills for {} as Paid?",
+    combined_invoice: "Combined Invoice",
+  },
+  ml: {
+    app_name: "എബി സി റെന്റൽ ഷോപ്പ്",
+    dashboard: "ഡാഷ്ബോർഡ്",
+    tools: "ഉപകരണങ്ങൾ",
+    rent_tool: "ഉപകരണം വാടകയ്ക്ക്",
+    active_rentals: "സജീവ വാടകകൾ",
+    bills: "ബില്ലുകൾ",
+    total_tools: "ആകെ ഉപകരണങ്ങൾ",
+    available_tools: "ലഭ്യമായ ഉപകരണങ്ങൾ",
+    active_rentals_count: "സജീവ വാടകകൾ",
+    all_tools: "എല്ലാ ഉപകരണങ്ങളും",
+    select_tool_hint: "ആരാണ് വാടകയ്ക്ക് എടുത്തതെന്ന് കാണാൻ ഒരു ഉപകരണം തിരഞ്ഞെടുക്കുക.",
+    tool_name: "ഉപകരണത്തിന്റെ പേര്",
+    available_qty: "ലഭ്യമായ എണ്ണം",
+    rate_per_day: "ഒരു ദിവസത്തിനുള്ള നിരക്ക്",
+    add_tool: "ഉപകരണം ചേർക്കുക",
+    edit_tool: "ഉപകരണം തിരുത്തുക",
+    edit_rental: "വാടക തിരുത്തുക",
+    delete_tool: "ഉപകരണം നീക്കംചെയ്യുക",
+    clear: "വെടിപ്പാക്കുക",
+    missing_tool_name: "ഉപകരണത്തിന്റെ പേര് ആവശ്യമാണ്",
+    enter_tool_name: "ഉപകരണത്തിന്റെ പേര് നൽകുക.",
+    duplicate_tool: "ഒരേ പേര്",
+    tool_exists: "ഈ പേരിൽ ഒരു ഉപകരണം ഇതിനകം ഉണ്ട്.",
+    select_tool: "ഉപകരണം തിരഞ്ഞെടുക്കുക",
+    select_tool_edit: "തിരുത്താൻ ഒരു ഉപകരണം തിരഞ്ഞെടുക്കുക.",
+    select_tool_delete: "നീക്കംചെയ്യാൻ ഒരു ഉപകരണം തിരഞ്ഞെടുക്കുക.",
+    delete_selected_tool: "തിരഞ്ഞെടുത്ത ഉപകരണം നീക്കംചെയ്യണോ?",
+    cannot_delete: "നീക്കംചെയ്യാൻ കഴിയില്ല",
+    tool_has_active_rentals: "ഈ ഉപകരണത്തിന് സജീവ വാടകകൾ ഉള്ളതിനാൽ നീക്കംചെയ്യാൻ കഴിയില്ല.",
+    customer_name: "ഉപഭോക്താവിന്റെ പേര്",
+    phone_number: "ഫോൺ നമ്പർ",
+    tool: "ഉപകരണം",
+    quantity: "എണ്ണം",
+    rent_date: "വാടക തീയതി",
+    expected_return_date: "പ്രതീക്ഷിക്കുന്ന മടക്ക തീയതി",
+    missing_customer: "ഉപഭോക്താവ് ഇല്ല",
+    enter_customer_name: "ഉപഭോക്താവിന്റെ പേര് നൽകുക.",
+    missing_phone: "ഫോൺ ഇല്ല",
+    enter_phone_number: "ഫോൺ നമ്പർ നൽകുക.",
+    no_tool_available: "ലഭ്യമായ ഉപകരണം ഇല്ല",
+    add_available_tool_first: "മുമ്പ് ലഭ്യമായ ഒരു ഉപകരണം ചേർക്കുക.",
+    invalid_date: "തെറ്റായ തീയതി",
+    return_before_rent: "പ്രതീക്ഷിക്കുന്ന മടക്ക തീയതി വാടക തീയതിക്ക് മുമ്പാകരുത്.",
+    rented: "വാടകയ്ക്ക് നൽകി",
+    tool_rented_successfully: "ഉപകരണം വിജയകരമായി വാടകയ്ക്ക് നൽകി.",
+    cannot_rent: "വാടകയ്ക്ക് നൽകാൻ കഴിയില്ല",
+    active_rentals_search: "ഉപഭോക്താവിന്റെ പേര് അല്ലെങ്കിൽ ഫോൺ നമ്പർ ഉപയോഗിച്ച് തിരയുക",
+    return_tool: "ഉപകരണം മടക്കുക",
+    print_bill: "ബിൽ പ്രിന്റ് ചെയ്യുക",
+    save_pdf: "ബിൽ PDF ആയി സേവ് ചെയ്യുക",
+    select_rental: "വാടക തിരഞ്ഞെടുക്കുക",
+    select_rental_first: "ആദ്യം ഒരു വാടക തിരഞ്ഞെടുക്കുക.",
+    return_confirm: "തിരഞ്ഞെടുത്ത ഉപകരണം മടക്കി ബിൽ കണക്കാക്കണോ?",
+    returned: "മടക്കിയിരിക്കുന്നു",
+    status: "സ്ഥിതി",
+    status_active: "സജീവം",
+    status_returned: "മടക്കിയത്",
+    rental_returned: "വാടക മടക്കിയിരിക്കുന്നു.",
+    days: "ദിവസങ്ങൾ",
+    amount: "തുക",
+    cannot_return: "മടക്കാൻ കഴിയില്ല",
+    bills_search: "ഉപഭോക്താവിന്റെ പേര് അല്ലെങ്കിൽ ഫോൺ നമ്പർ ഉപയോഗിച്ച് പഴയ ബില്ലുകൾ തിരയുക",
+    actual_return_date: "യഥാർത്ഥ മടക്ക തീയതി",
+    return_date: "മടക്ക തീയതി",
+    update_return_date: "മടക്ക തീയതി പുതുക്കുക",
+    reprint_bill: "ബിൽ വീണ്ടും പ്രിന്റ് ചെയ്യുക",
+    print_preview: "പ്രിന്റ് പ്രിവ്യൂ",
+    print_now: "പ്രിന്റ്",
+    close: "അടയ്ക്കുക",
+    mark_not_returned: "മടക്കിയിട്ടില്ല എന്ന് മാറ്റുക",
+    select_bill: "ബിൽ തിരഞ്ഞെടുക്കുക",
+    select_bill_first: "ആദ്യം ഒരു ബിൽ തിരഞ്ഞെടുക്കുക.",
+    move_back_active: "ഈ ബിൽ വീണ്ടും സജീവ വാടകകളിലേക്ക് മാറ്റണോ?",
+    updated: "പുതുക്കി",
+    rental_marked_not_returned: "വാടക മടക്കിയിട്ടില്ല എന്ന് മാറ്റി.",
+    cannot_update: "പുതുക്കാൻ കഴിയില്ല",
+    return_date_updated: "മടക്ക തീയതി പുതുക്കി, ബിൽ വീണ്ടും കണക്കാക്കി.",
+    add_to_list: "ലിസ്റ്റിലേക്ക് ചേർക്കുക",
+    action: "നടപടി",
+    remove: "നീക്കംചെയ്യുക",
+    cart_empty: "ലിസ്റ്റ് ശൂന്യമാണ്",
+    add_tool_first: "ആദ്യം ലിസ്റ്റിൽ ഒരു ഉപകരണമെങ്കിലും ചേർക്കുക.",
+    language: "ഭാഷ",
+    theme: "തീം",
+    dark: "ഡാർക്ക്",
+    light: "ലൈറ്റ്",
+    english: "ഇംഗ്ലീഷ്",
+    malayalam: "മലയാളം",
+    rental_details: "വാടക വിവരങ്ങൾ",
+    select_rental_details: "വിശദാംശങ്ങൾ കാണാൻ ഒരു വാടക തിരഞ്ഞെടുക്കുക.",
+    tools_taken: "എടുത്ത ഉപകരണങ്ങൾ",
+    paid: "പണം നൽകി",
+    not_paid: "പണം നൽകിയിട്ടില്ല",
+    payment_status: "പണമിടപാട് സ്ഥിതി",
+    mark_as_paid: "പണം നൽകിയതായി അടയാളപ്പെടുത്തുക",
+    mark_as_not_paid: "പണം നൽകിയിട്ടില്ല എന്ന് അടയാളപ്പെടുത്തുക",
+    credits: "കടങ്ങൾ",
+    credit_tracking: "കടങ്ങൾ കാണുക",
+    total_credit: "ആകെ കടം",
+    bill_count: "നൽകാനുള്ള ബില്ലുകൾ",
+    tools_on_credit: "കടമായി എടുത്തവ",
+    credits_search: "കടമുള്ളവരെ പേര് അല്ലെങ്കിൽ ഫോൺ വെച്ച് തിരയുക",
+    mark_customer_paid: "ഉപഭോക്താവ് പണം നൽകി എന്ന് മാറ്റുക",
+    mark_customer_paid_confirm: "{}ന്റെ എല്ലാ കുടിശ്ശിക ബില്ലുകളും പണം നൽകിയതായി മാറ്റണോ?",
+    combined_invoice: "കൂട്ടായ ബിൽ",
+  }
+};
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  tr: (key: keyof typeof TRANSLATIONS.en, formatParam?: string) => string;
+}
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem('language') as Language;
+    return saved === 'en' || saved === 'ml' ? saved : 'en';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('language', lang);
+  };
+
+  const tr = (key: keyof typeof TRANSLATIONS.en, formatParam?: string): string => {
+    const langDict = TRANSLATIONS[language] || TRANSLATIONS.en;
+    let text = langDict[key] || TRANSLATIONS.en[key] || key;
+    if (formatParam !== undefined) {
+      text = text.replace('{}', formatParam);
+    }
+    return text;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, tr }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};
