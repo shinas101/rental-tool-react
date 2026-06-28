@@ -3,6 +3,11 @@ import { createClient } from '@supabase/supabase-js';
 
 const app = new Hono<{ Bindings: { SUPABASE_URL: string; SUPABASE_SERVICE_ROLE_KEY: string } }>();
 
+app.onError((err, c) => {
+  console.error('[Worker Error]:', err);
+  return c.json({ error: err.message || 'Internal Server Error' }, 500);
+});
+
 const getSupabase = (c: any) => {
   return createClient(c.env.SUPABASE_URL, c.env.SUPABASE_SERVICE_ROLE_KEY);
 };
