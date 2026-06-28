@@ -109,6 +109,12 @@ const TRANSLATIONS = {
     mark_customer_paid: "Mark Customer Paid",
     mark_customer_paid_confirm: "Mark all outstanding bills for {} as Paid?",
     combined_invoice: "Combined Invoice",
+    share_whatsapp: "Share via WhatsApp",
+    pwa_install_title: "Install ABC Rental Shop",
+    pwa_install_desc: "Install this app on your device for quick offline access, push notifications, and a full-screen experience.",
+    pwa_install_btn: "Install",
+    pwa_dismiss_btn: "Not Now",
+    pwa_ios_instructions: "To install, tap the Share button in Safari and select 'Add to Home Screen'.",
   },
   ml: {
     app_name: "എബി സി റെന്റൽ ഷോപ്പ്",
@@ -216,6 +222,12 @@ const TRANSLATIONS = {
     mark_customer_paid: "ഉപഭോക്താവ് പണം നൽകി എന്ന് മാറ്റുക",
     mark_customer_paid_confirm: "{}ന്റെ എല്ലാ കുടിശ്ശിക ബില്ലുകളും പണം നൽകിയതായി മാറ്റണോ?",
     combined_invoice: "കൂട്ടായ ബിൽ",
+    share_whatsapp: "വാട്സാപ്പ് വഴി അയക്കുക",
+    pwa_install_title: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക",
+    pwa_install_desc: "എളുപ്പത്തിൽ ഉപയോഗിക്കാനും ഓഫ്‌ലൈൻ ആക്സസിനുമായി ഈ ആപ്പ് നിങ്ങളുടെ ഫോണിൽ ഇൻസ്റ്റാൾ ചെയ്യുക.",
+    pwa_install_btn: "ഇൻസ്റ്റാൾ",
+    pwa_dismiss_btn: "ഇപ്പോഴല്ല",
+    pwa_ios_instructions: "ഇൻസ്റ്റാൾ ചെയ്യാൻ സഫാരിയിലെ ഷെയർ ബട്ടൺ അമർത്തി 'ഹോം സ്ക്രീനിലേക്ക് ചേർക്കുക' എന്നത് തിരഞ്ഞെടുക്കുക.",
   }
 };
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { db } from '../utils/db';
 import type { GroupedRental, Tool } from '../utils/db';
-import { Check, Printer, FileText, Edit, Trash2, ArrowDown } from 'lucide-react';
+import { Check, Printer, FileText, Edit, Trash2, ArrowDown, MessageCircle } from 'lucide-react';
 
 
 interface ActiveRentalsProps {
@@ -112,6 +112,50 @@ export const ActiveRentals: React.FC<ActiveRentalsProps> = ({ onPrint }) => {
       }
     } catch (err: any) {
       showMsg('Failed to generate invoice.', 'error');
+    }
+  };
+
+  const handleWhatsAppShare = async () => {
+    if (!selectedRental) {
+      showMsg(tr('select_rental_first'), 'error');
+      return;
+    }
+    try {
+      const data = await db.getInvoiceData(selectedRental.id);
+      if (data) {
+        const formatDateStr = (dateStr: string) => {
+          if (!dateStr) return '';
+          const parts = dateStr.split('-');
+          if (parts.length === 3) {
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+          }
+          return dateStr;
+        };
+
+        let msg = `*${tr('app_name')}*\n`;
+        msg += `*${tr('active_rentals')} Invoice / Estimate*\n\n`;
+        msg += `*Bill No:* ${data.bill_no}\n`;
+        msg += `*Customer:* ${data.customer_name}\n`;
+        msg += `*Phone:* ${data.phone}\n`;
+        msg += `*Rent Date:* ${formatDateStr(data.rent_date)}\n`;
+        msg += `*Expected Return:* ${formatDateStr(data.return_date)}\n\n`;
+        msg += `*Items:*\n`;
+        data.items.forEach((item: any) => {
+          msg += `- ${item.tool_name} x ${item.quantity} (₹${item.rate_per_day.toFixed(2)}/day for ${item.days} days): ₹${item.amount.toFixed(2)}\n`;
+        });
+        msg += `\n*Estimated Total:* ₹${data.amount.toFixed(2)}\n\n`;
+        msg += `Thank you for choosing ${tr('app_name')}.`;
+
+        let cleanedPhone = data.phone.replace(/\D/g, '');
+        if (cleanedPhone.length === 10) {
+          cleanedPhone = '91' + cleanedPhone;
+        }
+
+        const link = `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(msg)}`;
+        window.open(link, '_blank');
+      }
+    } catch (err: any) {
+      showMsg('Failed to generate WhatsApp message.', 'error');
     }
   };
 
@@ -314,7 +358,7 @@ export const ActiveRentals: React.FC<ActiveRentalsProps> = ({ onPrint }) => {
           </div>
 
           {/* Action buttons */}
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={handleOpenReturn} disabled={!selectedRental}>
               <Check size={16} />
               {tr('return_tool')}
@@ -330,6 +374,10 @@ export const ActiveRentals: React.FC<ActiveRentalsProps> = ({ onPrint }) => {
             <button className="btn" onClick={handlePrint} disabled={!selectedRental}>
               <FileText size={16} />
               {tr('save_pdf')}
+            </button>
+            <button className="btn btn-whatsapp" onClick={handleWhatsAppShare} disabled={!selectedRental}>
+              <MessageCircle size={16} />
+              {tr('share_whatsapp')}
             </button>
           </div>
         </div>

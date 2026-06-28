@@ -692,22 +692,29 @@ tr.selected td {
   color: #166534;
 }
 
+.btn-whatsapp {
+  background: #25d366 !important;
+  border-color: #25d366 !important;
+  color: white !important;
+}
+.btn-whatsapp:hover {
+  background: #128c7e !important;
+  border-color: #128c7e !important;
+  color: white !important;
+}
+
 /* Print CSS Styles */
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
+  html, body, #root {
+    height: auto !important;
+    overflow: visible !important;
   }
   .app-container, .topbar, .sidebar, .btn, .nav-item, .table-container, .split-left, .split-right, .alert {
     display: none !important;
   }
   #print-area {
     display: block !important;
-    position: absolute;
-    left: 0;
-    top: 0;
     width: 100% !important;
-    height: 100% !important;
     background: white !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -892,4 +899,162 @@ tr.selected td {
     font-size: 0.88rem;
   }
 }
+
+/* PWA Installation Banner */
+.pwa-install-banner {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  max-width: 420px;
+  width: calc(100% - 48px);
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: var(--border-radius-card, var(--border-radius, 4px));
+  padding: 16px;
+  z-index: 150;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: pwa-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+@keyframes pwa-slide-up {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.pwa-banner-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pwa-banner-close {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.pwa-banner-close:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pwa-banner-header {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.pwa-banner-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pwa-banner-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pwa-banner-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+.pwa-banner-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.pwa-banner-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.pwa-banner-btn-secondary {
+  background: transparent;
+  border: var(--border-btn);
+  color: var(--color-btn);
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--border-radius, 4px);
+  transition: all 0.2s ease;
+}
+
+.pwa-banner-btn-secondary:hover {
+  background: var(--bg-btn-hover);
+  color: var(--color-btn-hover);
+}
+
+.pwa-banner-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  width: auto !important;
+}
+
+.pwa-banner-ios-instructions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ios-instructions-text {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed var(--border-color);
+  padding: 10px 12px;
+  border-radius: 6px;
+  line-height: 1.4;
+}
+
+.theme-light .ios-instructions-text {
+  background: #fcfcfc;
+}
+
+@media (max-width: 768px) {
+  .pwa-install-banner {
+    bottom: 76px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+}
+
 

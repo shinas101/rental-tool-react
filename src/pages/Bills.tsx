@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { db } from '../utils/db';
 import type { GroupedRental } from '../utils/db';
-import { Printer, FileText, Calendar, RotateCcw, HelpCircle } from 'lucide-react';
+import { Printer, FileText, Calendar, RotateCcw, HelpCircle, MessageCircle } from 'lucide-react';
 
 interface BillsProps {
   onPrint: (data: any) => void;
@@ -66,6 +66,50 @@ export const Bills: React.FC<BillsProps> = ({ onPrint }) => {
       }
     } catch (err: any) {
       showMsg('Failed to fetch invoice data.', 'error');
+    }
+  };
+
+  const handleWhatsAppShare = async () => {
+    if (!selectedBill) {
+      alert(tr('select_bill_first'));
+      return;
+    }
+    try {
+      const data = await db.getInvoiceData(selectedBill.id);
+      if (data) {
+        const formatDateStr = (dateStr: string) => {
+          if (!dateStr) return '';
+          const parts = dateStr.split('-');
+          if (parts.length === 3) {
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+          }
+          return dateStr;
+        };
+
+        let msg = `*${tr('app_name')}*\n`;
+        msg += `*${tr('bills')} Invoice / Bill*\n\n`;
+        msg += `*Bill No:* ${data.bill_no}\n`;
+        msg += `*Customer:* ${data.customer_name}\n`;
+        msg += `*Phone:* ${data.phone}\n`;
+        msg += `*Rent Date:* ${formatDateStr(data.rent_date)}\n`;
+        msg += `*Return Date:* ${formatDateStr(data.return_date)}\n\n`;
+        msg += `*Items:*\n`;
+        data.items.forEach((item: any) => {
+          msg += `- ${item.tool_name} x ${item.quantity} (₹${item.rate_per_day.toFixed(2)}/day for ${item.days} days): ₹${item.amount.toFixed(2)}\n`;
+        });
+        msg += `\n*Total Amount:* ₹${data.amount.toFixed(2)}\n\n`;
+        msg += `Thank you for choosing ${tr('app_name')}.`;
+
+        let cleanedPhone = data.phone.replace(/\D/g, '');
+        if (cleanedPhone.length === 10) {
+          cleanedPhone = '91' + cleanedPhone;
+        }
+
+        const link = `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(msg)}`;
+        window.open(link, '_blank');
+      }
+    } catch (err: any) {
+      showMsg('Failed to generate WhatsApp message.', 'error');
     }
   };
 
@@ -224,6 +268,10 @@ export const Bills: React.FC<BillsProps> = ({ onPrint }) => {
         <button className="btn" onClick={handlePrint} disabled={!selectedBill}>
           <FileText size={16} />
           {tr('save_pdf')}
+        </button>
+        <button className="btn btn-whatsapp" onClick={handleWhatsAppShare} disabled={!selectedBill}>
+          <MessageCircle size={16} />
+          {tr('share_whatsapp')}
         </button>
         <button className="btn" onClick={handleOpenEditDate} disabled={!selectedBill}>
           <Calendar size={16} />

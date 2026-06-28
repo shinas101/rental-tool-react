@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { db } from '../utils/db';
 import type { CreditCustomer, GroupedRental } from '../utils/db';
-import { Check, Printer, FileText } from 'lucide-react';
+import { Check, Printer, FileText, MessageCircle } from 'lucide-react';
 
 interface CreditsProps {
   onPrint: (data: any) => void;
@@ -100,6 +100,49 @@ export const Credits: React.FC<CreditsProps> = ({ onPrint }) => {
     }
   };
 
+  const handleWhatsAppShare = async () => {
+    if (!selectedCredit) {
+      alert(tr('select_rental_first'));
+      return;
+    }
+    try {
+      const unpaid = await db.getCustomerUnpaidRentals(selectedCredit.customer_name, selectedCredit.phone);
+      
+      const formatDateStr = (dateStr: string | null) => {
+        if (!dateStr) return '';
+        return dateStr.split('-').reverse().join('/');
+      };
+
+      let msg = `*${tr('app_name')}*\n`;
+      msg += `*${tr('credit_tracking')} Summary*\n\n`;
+      msg += `*${tr('customer_name')}:* ${selectedCredit.customer_name}\n`;
+      msg += `*${tr('phone_number')}:* ${selectedCredit.phone}\n`;
+      msg += `*${tr('total_credit')}:* ₹${selectedCredit.total_credit.toFixed(2)}\n\n`;
+      
+      msg += `*Unpaid Bills Detail:*\n`;
+      unpaid.forEach((bill) => {
+        const billNo = bill.id.substring(0, 8).toUpperCase();
+        const returnDateStr = formatDateStr(bill.actual_return_date || bill.return_date);
+        msg += `- Bill No: ${billNo}\n`;
+        msg += `  Date: ${returnDateStr}\n`;
+        msg += `  Tools: ${bill.tool_name}\n`;
+        msg += `  Amount: ₹${bill.amount.toFixed(2)}\n`;
+      });
+      
+      msg += `\nThank you for choosing ${tr('app_name')}. Please settle outstanding dues at your earliest convenience.`;
+      
+      let cleanedPhone = selectedCredit.phone.replace(/\D/g, '');
+      if (cleanedPhone.length === 10) {
+        cleanedPhone = '91' + cleanedPhone;
+      }
+      
+      const link = `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(msg)}`;
+      window.open(link, '_blank');
+    } catch (err: any) {
+      showMsg('Failed to generate WhatsApp message.', 'error');
+    }
+  };
+
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return '';
     return dateStr.split('-').reverse().join('/');
@@ -171,7 +214,7 @@ export const Credits: React.FC<CreditsProps> = ({ onPrint }) => {
           </div>
 
           {/* Action buttons */}
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={handlePayAll} disabled={!selectedCredit}>
               <Check size={16} />
               {tr('mark_customer_paid')}
@@ -183,6 +226,10 @@ export const Credits: React.FC<CreditsProps> = ({ onPrint }) => {
             <button className="btn" onClick={handlePrintCombined} disabled={!selectedCredit}>
               <FileText size={16} />
               {tr('save_pdf')}
+            </button>
+            <button className="btn btn-whatsapp" onClick={handleWhatsAppShare} disabled={!selectedCredit}>
+              <MessageCircle size={16} />
+              {tr('share_whatsapp')}
             </button>
           </div>
         </div>
