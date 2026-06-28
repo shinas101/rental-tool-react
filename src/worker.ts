@@ -9,7 +9,9 @@ app.onError((err, c) => {
 });
 
 const getSupabase = (c: any) => {
-  return createClient(c.env.SUPABASE_URL, c.env.SUPABASE_SERVICE_ROLE_KEY);
+  const url = c.env.SUPABASE_URL || c.env.VITE_SUPABASE_URL;
+  const key = c.env.SUPABASE_SERVICE_ROLE_KEY || c.env.VITE_SUPABASE_ANON_KEY || c.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+  return createClient(url, key);
 };
 
 // Helper for grouping and formatting rentals
