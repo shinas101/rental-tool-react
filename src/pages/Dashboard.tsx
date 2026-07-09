@@ -71,7 +71,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       <div className="metrics-grid">
         <div className="metric-card" onClick={handleTotalToolsClick}>
           <div className="metric-label">{tr('total_tools')}</div>
-          <div className="metric-value">{stats.total_tools}</div>
+          <div className="metric-value">
+            {stats.total_tools - stats.available_tools}/{stats.total_tools}
+          </div>
         </div>
         <div className="metric-card" onClick={() => onNavigate('tools')}>
           <div className="metric-label">{tr('available_tools')}</div>
