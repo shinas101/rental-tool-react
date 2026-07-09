@@ -170,42 +170,42 @@ export default function App() {
             onClick={() => setActiveTab('dashboard')}
           >
             <LayoutDashboard size={18} />
-            <span>{tr('dashboard')}</span>
+            <span>{tr('nav_dashboard')}</span>
           </button>
           <button
             className={`mobile-nav-item ${activeTab === 'tools' ? 'active' : ''}`}
             onClick={() => setActiveTab('tools')}
           >
             <Wrench size={18} />
-            <span>{tr('tools')}</span>
+            <span>{tr('nav_tools')}</span>
           </button>
           <button
             className={`mobile-nav-item ${activeTab === 'rent_tool' ? 'active' : ''}`}
             onClick={() => setActiveTab('rent_tool')}
           >
             <CalendarPlus size={18} />
-            <span>{tr('rent_tool').includes('വാടക') ? 'വാടക' : 'Rent'}</span>
+            <span>{tr('nav_rent_tool')}</span>
           </button>
           <button
             className={`mobile-nav-item ${activeTab === 'active_rentals' ? 'active' : ''}`}
             onClick={() => setActiveTab('active_rentals')}
           >
             <FileClock size={18} />
-            <span>{tr('active_rentals').includes('സജീവം') ? 'സജീവം' : 'Active'}</span>
+            <span>{tr('nav_active_rentals')}</span>
           </button>
           <button
             className={`mobile-nav-item ${activeTab === 'bills' ? 'active' : ''}`}
             onClick={() => setActiveTab('bills')}
           >
             <Receipt size={18} />
-            <span>{tr('bills')}</span>
+            <span>{tr('nav_bills')}</span>
           </button>
           <button
             className={`mobile-nav-item ${activeTab === 'credits' ? 'active' : ''}`}
             onClick={() => setActiveTab('credits')}
           >
             <Coins size={18} />
-            <span>{tr('credits').includes('കടങ്ങൾ') ? 'കടം' : 'Credits'}</span>
+            <span>{tr('nav_credits')}</span>
           </button>
         </nav>
       </div>

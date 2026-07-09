@@ -841,15 +841,24 @@ tr.selected td {
     border: none;
     color: var(--text-main);
     opacity: 0.65;
-    padding: 6px;
+    padding: 6px 2px;
     cursor: pointer;
-    font-size: 0.72rem;
+    font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
     font-family: inherit;
-    gap: 4px;
+    gap: 3px;
     flex: 1;
+    min-width: 0;
     transition: all 0.2s ease;
+  }
+
+  .mobile-nav-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: center;
   }
 
   .mobile-nav-item.active {
