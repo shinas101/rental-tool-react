@@ -71,9 +71,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       <div className="metrics-grid">
         <div className="metric-card" onClick={handleTotalToolsClick}>
           <div className="metric-label">{tr('total_tools')}</div>
-          <div className="metric-value">
-            {stats.total_tools - stats.available_tools}/{stats.total_tools}
-          </div>
+          <div className="metric-value">{stats.total_tools}</div>
         </div>
         <div className="metric-card" onClick={() => onNavigate('tools')}>
           <div className="metric-label">{tr('available_tools')}</div>
@@ -94,7 +92,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
               <thead>
                 <tr>
                   <th>{tr('tool_name')}</th>
-                  <th>{tr('available_qty')}</th>
+                  <th>{tr('available_qty')} / {tr('total_tools')}</th>
                   <th>{tr('rate_per_day')}</th>
                 </tr>
               </thead>
@@ -112,7 +110,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                       style={{ cursor: 'pointer' }}
                     >
                       <td>{t.name}</td>
-                      <td>{t.available_qty}</td>
+                      <td>{t.available_qty} / {t.total_qty ?? t.available_qty}</td>
                       <td>{t.rate_per_day.toFixed(2)}</td>
                     </tr>
                   ))
@@ -125,7 +123,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             <>
               <div style={{ margin: '12px 0 4px 0', fontSize: '0.95rem' }}>
                 <span className="text-muted" style={{ color: 'var(--text-muted)' }}>
-                  {selectedTool.name} - {tr('available_qty')}: {selectedTool.available_qty}
+                  {selectedTool.name} - {tr('available_qty')}: {selectedTool.available_qty} / {selectedTool.total_qty ?? selectedTool.available_qty}
                 </span>
               </div>
               <div className="table-container">

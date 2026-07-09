@@ -109,16 +109,36 @@ app.get('/api/dashboard-stats', async (c) => {
 app.get('/api/tools', async (c) => {
   const supabase = getSupabase(c);
   try {
-    const { data, error } = await supabase
+    const { data: toolsData, error: toolsError } = await supabase
       .from('tools')
       .select('*')
       .order('name', { ascending: true });
 
-    if (error) throw error;
-    return c.json((data || []).map(item => ({
-      ...item,
-      rate_per_day: Number(item.rate_per_day),
-    })));
+    if (toolsError) throw toolsError;
+
+    const { data: rentalsData, error: rentalsError } = await supabase
+      .from('rentals')
+      .select('tool_name, quantity')
+      .eq('returned', false);
+
+    if (rentalsError) throw rentalsError;
+
+    const rentedMap = new Map<string, number>();
+    (rentalsData || []).forEach((r: any) => {
+      const current = rentedMap.get(r.tool_name) || 0;
+      rentedMap.set(r.tool_name, current + Number(r.quantity));
+    });
+
+    const tools = (toolsData || []).map(item => {
+      const rentedQty = rentedMap.get(item.name) || 0;
+      return {
+        ...item,
+        rate_per_day: Number(item.rate_per_day),
+        total_qty: item.available_qty + rentedQty,
+      };
+    });
+
+    return c.json(tools);
   } catch (err: any) {
     return c.json({ error: err.message }, 500);
   }
@@ -128,17 +148,37 @@ app.get('/api/tools', async (c) => {
 app.get('/api/tools/active', async (c) => {
   const supabase = getSupabase(c);
   try {
-    const { data, error } = await supabase
+    const { data: toolsData, error: toolsError } = await supabase
       .from('tools')
       .select('*')
       .gt('available_qty', 0)
       .order('name', { ascending: true });
 
-    if (error) throw error;
-    return c.json((data || []).map(item => ({
-      ...item,
-      rate_per_day: Number(item.rate_per_day),
-    })));
+    if (toolsError) throw toolsError;
+
+    const { data: rentalsData, error: rentalsError } = await supabase
+      .from('rentals')
+      .select('tool_name, quantity')
+      .eq('returned', false);
+
+    if (rentalsError) throw rentalsError;
+
+    const rentedMap = new Map<string, number>();
+    (rentalsData || []).forEach((r: any) => {
+      const current = rentedMap.get(r.tool_name) || 0;
+      rentedMap.set(r.tool_name, current + Number(r.quantity));
+    });
+
+    const tools = (toolsData || []).map(item => {
+      const rentedQty = rentedMap.get(item.name) || 0;
+      return {
+        ...item,
+        rate_per_day: Number(item.rate_per_day),
+        total_qty: item.available_qty + rentedQty,
+      };
+    });
+
+    return c.json(tools);
   } catch (err: any) {
     return c.json({ error: err.message }, 500);
   }

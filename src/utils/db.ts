@@ -3,6 +3,7 @@ export interface Tool {
   name: string;
   available_qty: number;
   rate_per_day: number;
+  total_qty?: number;
 }
 
 export interface Rental {
