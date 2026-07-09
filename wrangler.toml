@@ -6,7 +6,3 @@ compatibility_date = "2024-04-03"
 directory = "./dist"
 binding = "ASSETS"
 
-[vars]
-SUPABASE_URL = "https://otmuwrowlmhuocejzhej.supabase.co"
-SUPABASE_SERVICE_ROLE_KEY = "sb_publishable_eAQJR3E0V466zWSudqbXvg_2AOmB7A8"
-
