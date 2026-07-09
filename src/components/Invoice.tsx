@@ -62,10 +62,13 @@ export const Invoice: React.FC<InvoiceProps> = ({ data }) => {
       }}>
         <div style={{ textAlign: 'left' }}>
           <h1 style={{ fontSize: '21pt', fontWeight: 800, margin: 0, letterSpacing: '0.2px' }}>
-            ABC RENTAL SHOP
+            MINNAS RENT SHOP
           </h1>
-          <div style={{ marginTop: '4px', color: '#667085', fontSize: '10pt' }}>
-            Phone: 9876543210
+          <div style={{ marginTop: '4px', color: '#101828', fontSize: '10.5pt', fontWeight: 600 }}>
+            Vakkaloor
+          </div>
+          <div style={{ marginTop: '2px', color: '#667085', fontSize: '10pt' }}>
+            Phone: 9846206878, 9605374802
           </div>
         </div>
         <div style={{ textAlign: 'right', color: '#475467', fontSize: '10pt', lineHeight: 1.45 }}>
@@ -170,7 +173,7 @@ export const Invoice: React.FC<InvoiceProps> = ({ data }) => {
 
       {/* Footer */}
       <div style={{ marginTop: '24px', textAlign: 'center', color: '#475467', fontSize: '10pt' }}>
-        Thank you for choosing ABC Rental Shop.
+        Thank you for choosing MINNAS RENT SHOP.
       </div>
     </div>
   );

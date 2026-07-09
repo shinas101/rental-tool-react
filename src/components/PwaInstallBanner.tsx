@@ -93,7 +93,7 @@ export const PwaInstallBanner: React.FC = () => {
           <X size={18} />
         </button>
         <div className="pwa-banner-header">
-          <img src="/icon-192.png" alt="ABC Rental Shop" className="pwa-banner-logo" />
+          <img src="/icon-192.png" alt="MINNAS RENT SHOP" className="pwa-banner-logo" />
           <div className="pwa-banner-text-group">
             <h3 className="pwa-banner-title">{tr('pwa_install_title')}</h3>
             <p className="pwa-banner-desc">{tr('pwa_install_desc')}</p>

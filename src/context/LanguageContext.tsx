@@ -4,7 +4,7 @@ type Language = 'en' | 'ml';
 
 const TRANSLATIONS = {
   en: {
-    app_name: "ABC Rental Shop",
+    app_name: "MINNAS RENT SHOP",
     dashboard: "Dashboard",
     tools: "Tools",
     rent_tool: "Rent Tool",
@@ -110,14 +110,14 @@ const TRANSLATIONS = {
     mark_customer_paid_confirm: "Mark all outstanding bills for {} as Paid?",
     combined_invoice: "Combined Invoice",
     share_whatsapp: "Share via WhatsApp",
-    pwa_install_title: "Install ABC Rental Shop",
+    pwa_install_title: "Install MINNAS RENT SHOP",
     pwa_install_desc: "Install this app on your device for quick offline access, push notifications, and a full-screen experience.",
     pwa_install_btn: "Install",
     pwa_dismiss_btn: "Not Now",
     pwa_ios_instructions: "To install, tap the Share button in Safari and select 'Add to Home Screen'.",
   },
   ml: {
-    app_name: "എബി സി റെന്റൽ ഷോപ്പ്",
+    app_name: "മിന്നാസ് റെന്റ് ഷോപ്പ്",
     dashboard: "ഡാഷ്ബോർഡ്",
     tools: "ഉപകരണങ്ങൾ",
     rent_tool: "ഉപകരണം വാടകയ്ക്ക്",
