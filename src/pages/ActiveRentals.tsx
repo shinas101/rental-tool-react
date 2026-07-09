@@ -133,6 +133,8 @@ export const ActiveRentals: React.FC<ActiveRentalsProps> = ({ onPrint }) => {
         };
 
         let msg = `*${tr('app_name')}*\n`;
+        msg += `_${tr('shop_location')}_\n`;
+        msg += `_${tr('shop_phone')}_\n\n`;
         msg += `*${tr('active_rentals')} Invoice / Estimate*\n\n`;
         msg += `*Bill No:* ${data.bill_no}\n`;
         msg += `*Customer:* ${data.customer_name}\n`;

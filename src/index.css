@@ -200,6 +200,12 @@ html, body, #root {
   letter-spacing: -0.5px;
 }
 
+.topbar-title-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .topbar-actions {
   display: flex;
   align-items: center;
@@ -210,9 +216,11 @@ html, body, #root {
 .shop-info-group {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 2px;
   line-height: 1.2;
+  border-left: 1.5px solid var(--border-color);
+  padding-left: 14px;
 }
 
 .shop-location-text {
@@ -783,12 +791,13 @@ tr.selected td {
     font-size: 0.8rem;
   }
 
+  .topbar-title-section {
+    display: block;
+    text-align: center;
+  }
+
   .shop-info-group {
-    width: 100%;
-    align-items: center;
-    border-bottom: 1px dashed var(--border-color);
-    padding-bottom: 6px;
-    margin-bottom: 2px;
+    display: none !important;
   }
 
   .main-content {

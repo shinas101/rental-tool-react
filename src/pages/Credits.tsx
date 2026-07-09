@@ -114,6 +114,8 @@ export const Credits: React.FC<CreditsProps> = ({ onPrint }) => {
       };
 
       let msg = `*${tr('app_name')}*\n`;
+      msg += `_${tr('shop_location')}_\n`;
+      msg += `_${tr('shop_phone')}_\n\n`;
       msg += `*${tr('credit_tracking')} Summary*\n\n`;
       msg += `*${tr('customer_name')}:* ${selectedCredit.customer_name}\n`;
       msg += `*${tr('phone_number')}:* ${selectedCredit.phone}\n`;
