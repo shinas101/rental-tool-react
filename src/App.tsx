@@ -34,6 +34,10 @@ export default function App() {
         <header className="topbar">
           <div className="topbar-title">{tr('app_name')}</div>
           <div className="topbar-actions">
+            <div className="topbar-group shop-info-group">
+              <span className="shop-location-text">{tr('shop_location')}</span>
+              <span className="shop-phone-text">{tr('shop_phone')}</span>
+            </div>
             <div className="topbar-group">
               <span className="topbar-label">{tr('language')}:</span>
               <select

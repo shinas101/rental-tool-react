@@ -204,6 +204,26 @@ html, body, #root {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex-wrap: wrap;
+}
+
+.shop-info-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  line-height: 1.2;
+}
+
+.shop-location-text {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.shop-phone-text {
+  font-size: 0.72rem;
+  color: var(--text-muted);
 }
 
 .topbar-group {
@@ -761,6 +781,14 @@ tr.selected td {
   .topbar-actions {
     justify-content: space-between;
     font-size: 0.8rem;
+  }
+
+  .shop-info-group {
+    width: 100%;
+    align-items: center;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 6px;
+    margin-bottom: 2px;
   }
 
   .main-content {

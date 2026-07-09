@@ -4,7 +4,11 @@ const ASSETS_TO_CACHE = [
   '/index.html',
   '/manifest.json',
   '/icon-192.png',
-  '/icon-512.png'
+  '/icon-512.png',
+  '/favicon.ico',
+  '/favicon-16x16.png',
+  '/favicon-32x32.png',
+  '/apple-touch-icon.png'
 ];
 
 // Install Event - Pre-cache primary assets
