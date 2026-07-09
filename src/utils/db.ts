@@ -45,6 +45,11 @@ export interface CreditCustomer {
   tools: string;
 }
 
+export interface Customer {
+  customer_name: string;
+  phone: string;
+}
+
 const fetchJson = async (url: string, options?: RequestInit) => {
   const res = await fetch(url, options);
   const data = await res.json();
@@ -171,5 +176,9 @@ export const db = {
 
   async getCombinedInvoiceData(customerName: string, phone: string) {
     return fetchJson(`/api/credits/combined-invoice?customerName=${encodeURIComponent(customerName)}&phone=${encodeURIComponent(phone)}`);
+  },
+
+  async getCustomers(): Promise<Customer[]> {
+    return fetchJson('/api/customers');
   }
 };

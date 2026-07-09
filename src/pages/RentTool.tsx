@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { db } from '../utils/db';
-import type { Tool } from '../utils/db';
+import type { Tool, Customer } from '../utils/db';
 import { Trash2, ArrowDown, RotateCcw } from 'lucide-react';
 
 interface CartItem {
@@ -14,6 +14,7 @@ export const RentTool: React.FC = () => {
   const { tr } = useLanguage();
   const [customer, setCustomer] = useState('');
   const [phone, setPhone] = useState('');
+  const [customersList, setCustomersList] = useState<Customer[]>([]);
   
   const [activeTools, setActiveTools] = useState<Tool[]>([]);
   const [selectedToolName, setSelectedToolName] = useState('');
@@ -44,8 +45,34 @@ export const RentTool: React.FC = () => {
     }
   };
 
+  const fetchCustomers = async () => {
+    try {
+      const data = await db.getCustomers();
+      setCustomersList(data);
+    } catch (err: any) {
+      console.error('Failed to load customers:', err);
+    }
+  };
+
+  const handleCustomerChange = (val: string) => {
+    setCustomer(val);
+    const match = customersList.find(c => c.customer_name.toLowerCase() === val.trim().toLowerCase());
+    if (match) {
+      setPhone(match.phone);
+    }
+  };
+
+  const handlePhoneChange = (val: string) => {
+    setPhone(val);
+    const match = customersList.find(c => c.phone.trim() === val.trim());
+    if (match) {
+      setCustomer(match.customer_name);
+    }
+  };
+
   useEffect(() => {
     fetchActiveTools();
+    fetchCustomers();
   }, []);
 
   const showMsg = (text: string, type: 'success' | 'error') => {
@@ -141,6 +168,7 @@ export const RentTool: React.FC = () => {
       showMsg(tr('tool_rented_successfully'), 'success');
       clearForm();
       fetchActiveTools();
+      fetchCustomers();
     } catch (err: any) {
       showMsg(err.message || 'Rental failed.', 'error');
     }
@@ -166,20 +194,34 @@ export const RentTool: React.FC = () => {
             <input
               type="text"
               value={customer}
-              onChange={(e) => setCustomer(e.target.value)}
+              onChange={(e) => handleCustomerChange(e.target.value)}
               placeholder={tr('customer_name')}
               style={{ width: '100%' }}
+              list="customer-names"
             />
+            <datalist id="customer-names">
+              {customersList.map((c, idx) => (
+                <option key={idx} value={c.customer_name} />
+              ))}
+            </datalist>
           </div>
           <div className="form-group">
             <label>{tr('phone_number')}</label>
             <input
               type="text"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => handlePhoneChange(e.target.value)}
               placeholder={tr('phone_number')}
               style={{ width: '100%' }}
+              list="customer-phones"
             />
+            <datalist id="customer-phones">
+              {customersList.map((c, idx) => (
+                <option key={idx} value={c.phone}>
+                  {c.customer_name}
+                </option>
+              ))}
+            </datalist>
           </div>
 
           {/* Tool Select & Add Row */}

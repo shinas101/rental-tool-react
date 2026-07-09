@@ -729,4 +729,35 @@ app.get('/api/credits/combined-invoice', async (c) => {
   }
 });
 
+// 21. Get All Unique Customers
+app.get('/api/customers', async (c) => {
+  const supabase = getSupabase(c);
+  try {
+    const { data, error } = await supabase
+      .from('rentals')
+      .select('customer_name, phone');
+
+    if (error) throw error;
+
+    // Deduplicate by phone number to yield a unique customer list
+    const customerMap = new Map<string, string>();
+    (data || []).forEach((r: any) => {
+      const name = (r.customer_name || '').trim();
+      const phone = (r.phone || '').trim();
+      if (name && phone) {
+        customerMap.set(phone, name);
+      }
+    });
+
+    const customers = Array.from(customerMap.entries()).map(([phone, customer_name]) => ({
+      customer_name,
+      phone,
+    })).sort((a, b) => a.customer_name.localeCompare(b.customer_name));
+
+    return c.json(customers);
+  } catch (err: any) {
+    return c.json({ error: err.message }, 500);
+  }
+});
+
 export default app;
