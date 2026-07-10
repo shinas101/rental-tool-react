@@ -61,10 +61,11 @@ const fetchRentalsHelper = async (supabase: any, returned: boolean, searchText: 
       paid: paidStatus,
       tool_name: toolsStr,
       quantity: totalQty,
+      db_id: Math.max(...rentals.map((r: any) => Number(r.id))),
     };
   });
 
-  return result.sort((a, b) => b.id.localeCompare(a.id));
+  return result.sort((a, b) => b.db_id - a.db_id);
 };
 
 // 1. Dashboard Stats
@@ -568,8 +569,9 @@ app.get('/api/credits', async (c) => {
         total_credit: group.totalCredit,
         bill_count: uniqueBills,
         tools: toolsStr,
+        max_db_id: Math.max(...group.rentals.map((r: any) => Number(r.id))),
       };
-    }).sort((a, b) => a.customer_name.localeCompare(b.customer_name));
+    }).sort((a, b) => b.max_db_id - a.max_db_id);
 
     return c.json(result);
   } catch (err: any) {
@@ -624,8 +626,9 @@ app.get('/api/credits/unpaid', async (c) => {
         paid: first.paid,
         tool_name: toolsStr,
         quantity: totalQty,
+        db_id: Math.max(...rentals.map((r: any) => Number(r.id))),
       };
-    }).sort((a, b) => b.id.localeCompare(a.id));
+    }).sort((a, b) => b.db_id - a.db_id);
 
     return c.json(result);
   } catch (err: any) {
