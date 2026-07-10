@@ -123,6 +123,7 @@ const TRANSLATIONS = {
     pwa_install_btn: "Install",
     pwa_dismiss_btn: "Not Now",
     pwa_ios_instructions: "To install, tap the Share button in Safari and select 'Add to Home Screen'.",
+    pwa_manual_instructions: "To install, open your browser menu (tap ⋮ or share icon) and select 'Install App' or 'Add to Home Screen'.",
   },
   ml: {
     app_name: "മിന്നാസ് റെന്റ് ഷോപ്പ്",
@@ -244,6 +245,7 @@ const TRANSLATIONS = {
     pwa_install_btn: "ഇൻസ്റ്റാൾ",
     pwa_dismiss_btn: "ഇപ്പോഴല്ല",
     pwa_ios_instructions: "ഇൻസ്റ്റാൾ ചെയ്യാൻ സഫാരിയിലെ ഷെയർ ബട്ടൺ അമർത്തി 'ഹോം സ്ക്രീനിലേക്ക് ചേർക്കുക' എന്നത് തിരഞ്ഞെടുക്കുക.",
+    pwa_manual_instructions: "ഇൻസ്റ്റാൾ ചെയ്യാൻ, ബ്രൗസർ മെനു തുറന്ന് (⋮ അല്ലെങ്കിൽ ഷെയർ ഐക്കൺ) 'ഇൻസ്റ്റാൾ ചെയ്യുക' അല്ലെങ്കിൽ 'ഹോം സ്ക്രീനിലേക്ക് ചേർക്കുക' എന്നത് തിരഞ്ഞെടുക്കുക.",
   }
 };
 

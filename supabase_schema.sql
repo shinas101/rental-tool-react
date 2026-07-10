@@ -139,7 +139,7 @@ BEGIN
         END IF;
         
         -- Calculate rental days and amount
-        v_days := p_actual_return_date - v_rental.rent_date;
+        v_days := (p_actual_return_date - v_rental.rent_date) + 1;
         IF v_days < 1 THEN
             v_days := 1;
         END IF;
@@ -257,7 +257,7 @@ BEGIN
             RAISE EXCEPTION 'Rate per day not found for tool %', v_rental.tool_name;
         END IF;
         
-        v_days := p_actual_return_date - v_rental.rent_date;
+        v_days := (p_actual_return_date - v_rental.rent_date) + 1;
         IF v_days < 1 THEN
             v_days := 1;
         END IF;

@@ -53,16 +53,19 @@ export const PwaInstallBanner: React.FC = () => {
       const handleBeforeInstallPrompt = (e: Event) => {
         e.preventDefault();
         setDeferredPrompt(e as BeforeInstallPromptEvent);
-        // Show the banner after 2 seconds
-        const timer = setTimeout(() => {
-          setIsVisible(true);
-        }, 2000);
-        return () => clearTimeout(timer);
+        setIsVisible(true);
       };
 
       window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+      // Show manual fallback prompt after 3 seconds for first-time visitors
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 3000);
+
       return () => {
         window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        clearTimeout(timer);
       };
     }
   }, []);
@@ -109,7 +112,7 @@ export const PwaInstallBanner: React.FC = () => {
               {tr('close')}
             </button>
           </div>
-        ) : (
+        ) : deferredPrompt ? (
           <div className="pwa-banner-actions">
             <button className="btn pwa-banner-btn-secondary" onClick={handleDismiss}>
               {tr('pwa_dismiss_btn')}
@@ -117,6 +120,15 @@ export const PwaInstallBanner: React.FC = () => {
             <button className="btn btn-primary pwa-banner-btn-primary" onClick={handleInstall}>
               <Download size={16} style={{ marginRight: '6px' }} />
               {tr('pwa_install_btn')}
+            </button>
+          </div>
+        ) : (
+          <div className="pwa-banner-ios-instructions">
+            <div className="ios-instructions-text">
+              {tr('pwa_manual_instructions')}
+            </div>
+            <button className="btn btn-primary pwa-banner-btn-primary" onClick={handleDismiss}>
+              {tr('close')}
             </button>
           </div>
         )}

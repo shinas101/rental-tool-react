@@ -401,7 +401,7 @@ app.get('/api/rentals/invoice/:groupId', async (c) => {
       const rent = new Date(rentDate);
       const ret = new Date(returnDate);
       const diffTime = Math.abs(ret.getTime() - rent.getTime());
-      days = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+      days = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1);
     }
 
     const items = [];
