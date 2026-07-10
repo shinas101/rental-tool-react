@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { db } from '../utils/db';
 import type { GroupedRental } from '../utils/db';
-import { Printer, FileText, Calendar, RotateCcw, HelpCircle, MessageCircle } from 'lucide-react';
+import { Printer, FileText, Calendar, RotateCcw, HelpCircle, MessageCircle, Trash2 } from 'lucide-react';
 
 interface BillsProps {
   onPrint: (data: any) => void;
@@ -168,6 +168,19 @@ export const Bills: React.FC<BillsProps> = ({ onPrint }) => {
     }
   };
 
+  const handleDeleteBill = async (groupId: string) => {
+    const confirmDelete = window.confirm(tr('delete_bill_confirm'));
+    if (!confirmDelete) return;
+
+    try {
+      await db.deleteRental(groupId);
+      showMsg('Bill deleted successfully.', 'success');
+      fetchBills();
+    } catch (err: any) {
+      showMsg(err.message || 'Failed to delete bill.', 'error');
+    }
+  };
+
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return '';
     return dateStr.split('-').reverse().join('/');
@@ -226,12 +239,13 @@ export const Bills: React.FC<BillsProps> = ({ onPrint }) => {
               <th>{tr('rate_per_day')}</th>
               <th>{tr('amount')}</th>
               <th>{tr('payment_status')}</th>
+              <th>{tr('action')}</th>
             </tr>
           </thead>
           <tbody>
             {bills.length === 0 ? (
               <tr>
-                <td colSpan={11} style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
+                <td colSpan={12} style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
                   No bills found.
                 </td>
               </tr>
@@ -254,6 +268,20 @@ export const Bills: React.FC<BillsProps> = ({ onPrint }) => {
                   <td>{getRateStr(b)}</td>
                   <td>{Number(b.amount).toFixed(2)}</td>
                   <td>{b.paid ? tr('paid') : tr('not_paid')}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-icon"
+                      style={{ padding: '4px 8px', minHeight: 'auto', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteBill(b.id);
+                      }}
+                    >
+                      <Trash2 size={14} />
+                      {tr('delete')}
+                    </button>
+                  </td>
                 </tr>
               ))
             )}

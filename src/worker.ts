@@ -763,4 +763,21 @@ app.get('/api/customers', async (c) => {
   }
 });
 
+// 22. Delete Rental Group (Bill)
+app.delete('/api/rentals/:groupId', async (c) => {
+  const supabase = getSupabase(c);
+  try {
+    const groupId = c.req.param('groupId');
+    const { error } = await supabase
+      .from('rentals')
+      .delete()
+      .eq('group_id', groupId);
+
+    if (error) throw error;
+    return c.json({ success: true });
+  } catch (err: any) {
+    return c.json({ error: err.message }, 500);
+  }
+});
+
 export default app;

@@ -142,6 +142,12 @@ export const db = {
     });
   },
 
+  async deleteRental(groupId: string) {
+    return fetchJson(`/api/rentals/${groupId}`, {
+      method: 'DELETE',
+    });
+  },
+
   async updateReturnDate(groupId: string, actualReturnDate: string) {
     return fetchJson('/api/rentals/return-date', {
       method: 'PUT',
